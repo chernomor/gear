@@ -11,7 +11,9 @@ BuildArch: noarch
 Source: %name-%version.tar
 
 # due to gear-srpmimport.
+%if !0%{?rhel}
 Requires: faketime
+%endif
 
 # due to git-diff-tree --no-ext-diff
 Requires: git-core >= 0:1.5.3
@@ -25,8 +27,13 @@ Requires: tar >= 1.29.0.19.d061, zstd
 # hasher>=1.0.30 supports tar packages made by gear utility.
 Conflicts: hasher < 0:1.0.30
 
+%if 0%{?rhel}
+BuildRequires: asciidoc, git-core >= 1.8.0, help2man, libshell >= 0:0.0.3-alt1
+%{?!_without_check:%{?!_disable_check:BuildRequires: bzip2, gzip, xz, zip, unzip, zstd}}
+%else
 BuildPreReq: asciidoc, git-core >= 1.8.0, help2man, libshell >= 0:0.0.3-alt1
 %{?!_without_check:%{?!_disable_check:BuildRequires: bzip2, gzip, faketime, unzip, xz, zip, zstd}}
+%endif
 
 %description
 This package contains utilities for building RPM packages from GEAR
@@ -37,19 +44,33 @@ See %_docdir/%name-%version/QUICKSTART.ru_RU.UTF-8 for details.
 %setup
 
 %build
+%if 0%{?rhel} && 0%{?rhel} < 7
+%{__make} %{?_smp_mflags}
+%else
 %make_build
+%endif
 asciidoc docs/ABOUT.ru.utf8
 asciidoc docs/QUICKSTART.ru.utf8
 
+%if !0%{?rhel}
 %check
 make check
+%endif
 
 %install
+%if 0%{?rhel}
+%make_install install DESTDIR=%buildroot
+%else
 %makeinstall_std
+%endif
 install -pDm644 contrib/gear-bash_completion \
 	%buildroot/etc/bash_completion.d/gear
 ln -s gear-store-tags %buildroot%_bindir/gear-update-tag
+%if 0%{?rhel}
+ln -s gear-store-tags.1 %buildroot%_mandir/man1/gear-update-tag.1
+%else
 ln -s gear-store-tags.1 %buildroot%_man1dir/gear-update-tag.1
+%endif
 
 %files
 %config /etc/bash_completion.d/*

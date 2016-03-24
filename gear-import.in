@@ -296,6 +296,7 @@ rulesfile="$(readlink -ev "$rulesfile")"
 [ -s "$rulesfile" ] ||
 	fatal "$rulesfile: file empty."
 
+if ! [ -f /etc/centos-release ] && ! [ -f /etc/rhel-release ]; then
 faketime="$(which faketime 2>/dev/null)" ||
 	fatal "faketime not found."
 
@@ -306,6 +307,7 @@ if [ -n "$timestamp" ]; then
 	$faketime "$timestamp" true
 else
 	faketime="$faketime -r"
+fi
 fi
 
 # Change to toplevel directory
@@ -360,12 +362,20 @@ for archive_file; do
 	expand_string tag_msg "${tag_msg_format:-$archive_name $archive_version}"
 	expand_string commit_msg "${commit_msg_format:-Import archive $archive}"
 
+if ! [ -f /etc/centos-release ] && ! [ -f /etc/rhel-release ]; then
 	$faketime "${timestamp:-$archive_file}" -- \
 		git commit --no-verify $sign -a -m "$commit_msg"
+else
+		git commit --no-verify $sign -a -m "$commit_msg"
+fi
 
 	[ -z "$no_tag" ] ||
 		continue
 
+if ! [ -f /etc/centos-release ] && ! [ -f /etc/rhel-release ]; then
 	$faketime "${timestamp:-$archive_file}" -- \
 		git tag $sign -f -m "$tag_msg" "$tag"
+else
+		git tag $sign -f -m "$tag_msg" "$tag"
+fi
 done
