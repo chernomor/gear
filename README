@@ -1,0 +1,10 @@
+https://www.altlinux.org/Gear
+
+gear — это инструмент для хранения, поддержки и сборки RPM-пакетов в git-репозиториях.
+Похожие инструменты — {git,svn,tla}-buildpackage, bzr-builddeb из Debian.
+
+https://www.altlinux.org/Gear/old - описание
+https://www.altlinux.org/Справочник_по_gear
+https://www.altlinux.org/Руководство_по_gear
+
+
