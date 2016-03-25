@@ -411,10 +411,10 @@ get_NVR_from_spec()
 {
 	local spec="$1"; shift
 
-	spec_name="$(sed '/^name:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
-	spec_epoch="$(sed '/^\(epoch\|serial\):[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
-	spec_version="$(sed '/^version:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
-	spec_release="$(sed '/^release:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
+	spec_name="$(sed '/^name[[:space:]]*:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
+	spec_epoch="$(sed '/^\(epoch\|serial\)[[:space:]]*:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
+	spec_version="$(sed '/^version[[:space:]]*:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
+	spec_release="$(sed '/^release[[:space:]]*:[[:space:]]*/I!d;s///;q' "$spec" |sed 's/[[:space:]]\+$//')"
 
 	expand_rpm_macros "$spec" spec_name
 	expand_rpm_macros "$spec" spec_epoch
