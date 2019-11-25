@@ -151,6 +151,13 @@ write_compressed_file()
 					*) set -- -9 ;;
 				esac
 			fi
+			case "$cmd" in
+				gzip)  [ -x /usr/bin/pigz ] && cmd=/usr/bin/pigz ;;
+				bzip2) [ -x /usr/bin/pbzip2 ] && cmd=/usr/bin/pbzip2 ;;
+				xz)    [ -x /usr/bin/pxz ] && cmd=/usr/bin/pxz ;;
+				zstd)  [ -x /usr/bin/pzstd ] && cmd=/usr/bin/pzstd ;;
+			esac
+
 			if [ -n "$name" ]; then
 				local tmp_name
 				tmp_name="$(mktemp -- "$name".XXXXXX)"
