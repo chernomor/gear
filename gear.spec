@@ -1,6 +1,6 @@
 Name: gear
 Version: 2.2.0
-Release: alt1
+Release: alt1.pl1
 
 Summary: Get Every Archive from git package Repository
 License: GPLv2+
@@ -80,6 +80,10 @@ ln -s gear-store-tags.1 %buildroot%_man1dir/gear-update-tag.1
 %doc docs/QUICKSTART* docs/ABOUT*
 
 %changelog
+* Tue Jan 15 2020 Sergey Chernomorets <s.chernomorets@gmail.com> 2.2.0-alt1.pl1
+- use pigz, pbzip2, pxz if it available
+- build for centos
+
 * Tue Mar 06 2018 Dmitry V. Levin <ldv@altlinux.org> 2.2.0-alt1
 - gear-srpmimport: honor RPMFILE_SPECFILE.
 - gear-changelog (by Alexey Gladkov):
